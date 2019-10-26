@@ -10,18 +10,16 @@ class Month(object):
 	def __setitem__(self, key, value):
 		current_day = 1
 		if type(key) != int:
-			if key < 1 or key > 31:
+			if key < 0 or key > 31:
 				raise IndexError
 			raise ValueError
 		if type(value) not in (int, float):
 			raise ValueError
-		if len(self.weeks):
-			for week_index, week in enumerate(self.weeks):
-				for day_index, day in enumerate(week):
-					if key == current_day:
-						self.weeks[week_index][day_index] = value
-						return None
-					current_day += 1
+		if len(self.weeks) and 0 < key < 32:
+			week_index = int(key / 7 - 0.1)
+			factor_ = week_index * 7
+			day_index = key - factor_ - 1
+			self.weeks[week_index][day_index] = value
 		else:
 			raise IndexError
 
